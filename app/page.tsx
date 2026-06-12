@@ -1,6 +1,6 @@
 "use client";
 import AddSuggestionDialog from "@/components/add-suggestion-dialog/AddSuggestionDialog";
-import Map from "@/components/map/Map";
+import dynamic from "next/dynamic";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import ViewSuggestionsDialog from "@/components/view-suggestions-dialog/ViewSuggestionsDialog";
 
@@ -11,6 +11,10 @@ export default function Home() {
   const suggestions = useQuery(api.suggestions.get);
   const pins = suggestions?.map((s) => {
     return { ...s.location, name: s.name };
+  });
+
+  const Map = dynamic(() => import("@/components/map/Map"), {
+    ssr: false,
   });
 
   return (
