@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/table";
 
 import type { Doc } from "@/convex/_generated/dataModel";
+import { ScrollBar, ScrollArea } from "../ui/scroll-area";
 
 type Suggestion = Doc<"suggestions">;
 
@@ -47,67 +48,83 @@ export default function ViewSuggestionsDialog({
         ) : (
           <>
             <div className="rounded-md overflow-hidden">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead
-                      className="text-center border-r"
-                      style={{ fontSize: "1rem" }}
-                    >
-                      Name
-                    </TableHead>
-
-                    <TableHead className="text-center border-r">
-                      Description
-                    </TableHead>
-
-                    <TableHead className="text-center border-r">By</TableHead>
-
-                    <TableHead className="text-center">Coords</TableHead>
-                  </TableRow>
-                </TableHeader>
-
-                <TableBody>
-                  {suggestions?.map((s) => (
-                    <TableRow key={s._id}>
-                      <TableCell
-                        style={{
-                          textAlign: "center",
-                        }}
+              <ScrollArea>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead
+                        className="text-center border-r"
+                        style={{ fontSize: "1rem" }}
                       >
-                        {s.name}
-                      </TableCell>
+                        Name
+                      </TableHead>
 
-                      <TableCell
-                        className="text-muted-foreground text-ellipsis"
-                        style={{
-                          textAlign: "center",
-                        }}
-                      >
-                        {s.description || "—"}
-                      </TableCell>
+                      <TableHead className="text-center border-r">
+                        Description
+                      </TableHead>
 
-                      <TableCell
-                        style={{
-                          textAlign: "center",
-                        }}
-                      >
-                        {s.by.charAt(0).toUpperCase() + s.by.slice(1)}
-                      </TableCell>
+                      <TableHead className="text-center border-r">By</TableHead>
 
-                      <TableCell
-                        style={{
-                          textAlign: "center",
-                        }}
-                      >
-                        {s.location
-                          ? `Lat: ${s.location.lat}, Lng: ${s.location.long}`
-                          : "—"}
-                      </TableCell>
+                      <TableHead className="text-center border-r">
+                        Adress
+                      </TableHead>
+
+                      <TableHead className="text-center">Coords</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+
+                  <TableBody>
+                    {suggestions?.map((s) => (
+                      <TableRow key={s._id}>
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                          }}
+                        >
+                          {s.name}
+                        </TableCell>
+
+                        <TableCell
+                          className="text-muted-foreground text-ellipsis"
+                          style={{
+                            textAlign: "center",
+                          }}
+                        >
+                          {s.description || "—"}
+                        </TableCell>
+
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                          }}
+                        >
+                          {s.by.charAt(0).toUpperCase() + s.by.slice(1)}
+                        </TableCell>
+
+                        <TableCell
+                          className="text-muted-foreground text-ellipsis"
+                          style={{
+                            textAlign: "center",
+                          }}
+                        >
+                          {s.adress || "—"}
+                        </TableCell>
+
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                          }}
+                        >
+                          {s.location
+                            ? `Lat: ${s.location.lat}, Lng: ${s.location.long}`
+                            : "—"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             </div>
           </>
         )}
