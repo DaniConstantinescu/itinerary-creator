@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -35,6 +35,8 @@ import { api } from "@/convex/_generated/api";
 
 type FormData = z.infer<typeof suggestionFormSchema>;
 
+const BY_STORAGE_KEY = "suggestion_by";
+
 export default function AddSuggestionDialog() {
   const [open, setOpen] = useState(false);
 
@@ -48,13 +50,24 @@ export default function AddSuggestionDialog() {
   } = useForm<FormData>({
     resolver: zodResolver(suggestionFormSchema),
   });
+
   const addSuggestion = useMutation(api.suggestions.add);
+
+  // -----------------------------
+  // restore from localStorage
+  // -----------------------------
+  useEffect(() => {
+    const saved = localStorage.getItem(BY_STORAGE_KEY);
+
+    if (saved && BY_VALUES.includes(saved as FormData["by"])) {
+      setValue("by", saved as FormData["by"]);
+    }
+  }, [setValue]);
 
   const onSubmit = (data: FormData) => {
     const hasLat = data.lat !== undefined;
     const hasLng = data.lng !== undefined;
 
-    // runtime rule (lat/lng must come together)
     if ((hasLat && !hasLng) || (!hasLat && hasLng)) {
       return;
     }
@@ -100,65 +113,48 @@ export default function AddSuggestionDialog() {
           {/* DESCRIPTION */}
           <div className="flex flex-col gap-1">
             <Label>Description</Label>
-            <Textarea
-              {...register("description")}
-              placeholder="Optional description"
-            />
+            <Textarea {...register("description")} />
           </div>
 
+          {/* ADDRESS */}
           <div className="flex flex-col gap-1">
             <Label>Address (optional)</Label>
-            <Input
-              {...register("address")}
-              placeholder="e.g. 12 Rue de Rivoli, Paris"
-            />
-            {errors.address && (
-              <p className="text-sm text-red-500">{errors.address.message}</p>
-            )}
+            <Input {...register("address")} />
           </div>
 
-          {/* LAT / LNG */}
+          {/* LAT LNG */}
           <div className="flex flex-col gap-1">
-            <Label>Location (optional)</Label>
+            <Label>Location</Label>
 
             <div className="flex items-center gap-2">
-              <div className="flex flex-col w-full">
-                <Input
-                  type="number"
-                  step="any"
-                  {...register("lat", { valueAsNumber: true })}
-                />
-              </div>
+              <Input
+                type="number"
+                step="any"
+                placeholder="Lat"
+                {...register("lat", { valueAsNumber: true })}
+              />
 
               <Separator orientation="vertical" className="h-8" />
 
-              <div className="flex flex-col w-full">
-                <Input
-                  type="number"
-                  step="any"
-                  {...register("lng", { valueAsNumber: true })}
-                />
-              </div>
+              <Input
+                type="number"
+                step="any"
+                placeholder="Lng"
+                {...register("lng", { valueAsNumber: true })}
+              />
             </div>
-
-            <p className="text-xs text-muted-foreground">
-              Both latitude and longitude must be filled together
-            </p>
-
-            {errors.lat && (
-              <p className="text-sm text-red-500">{errors.lat.message}</p>
-            )}
           </div>
 
+          {/* BY */}
           <div className="flex flex-col gap-1">
             <Label>By</Label>
 
             <Select
-              onValueChange={(value: FormData["by"]) =>
-                setValue("by", value, { shouldValidate: true })
-              }
-              // eslint-disable-next-line react-hooks/incompatible-library
-              defaultValue={watch("by")}
+              value={watch("by")}
+              onValueChange={(value: FormData["by"]) => {
+                setValue("by", value, { shouldValidate: true });
+                localStorage.setItem(BY_STORAGE_KEY, value);
+              }}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select person" />
