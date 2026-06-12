@@ -85,7 +85,7 @@ export default function ViewSuggestionsDialog({
                         </TableCell>
 
                         <TableCell
-                          className="text-muted-foreground text-ellipsis"
+                          className="text-muted-foreground text-ellipsis max-w-80 text-wrap"
                           style={{
                             textAlign: "center",
                           }}
@@ -102,7 +102,7 @@ export default function ViewSuggestionsDialog({
                         </TableCell>
 
                         <TableCell
-                          className="text-muted-foreground text-ellipsis"
+                          className="text-muted-foreground text-ellipsis max-w-80 text-wrap"
                           style={{
                             textAlign: "center",
                           }}
