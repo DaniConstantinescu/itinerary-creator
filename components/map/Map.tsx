@@ -32,7 +32,7 @@ export default function Map({ pins }: MapProps) {
     >
       <TileLayer
         attribution="&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap contributors"
-        url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
       />
 
       {pins?.map((p, index) => {
