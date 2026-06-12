@@ -88,6 +88,7 @@ export default function ViewSuggestionsDialog({
                           className="text-muted-foreground text-ellipsis max-w-80 text-wrap"
                           style={{
                             textAlign: "center",
+                            textWrap: "auto",
                           }}
                         >
                           {s.description || "—"}
@@ -105,6 +106,7 @@ export default function ViewSuggestionsDialog({
                           className="text-muted-foreground text-ellipsis max-w-80 text-wrap"
                           style={{
                             textAlign: "center",
+                            textWrap: "auto",
                           }}
                         >
                           {s.adress || "—"}
