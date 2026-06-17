@@ -47,7 +47,7 @@ export default function ViewSuggestionsDialog({
           </div>
         ) : (
           <>
-            <div className="rounded-md overflow-hidden">
+            <div className="rounded-md overflow-hidden max-h-[70vh] overflow-y-auto ">
               <ScrollArea>
                 <Table>
                   <TableHeader>
